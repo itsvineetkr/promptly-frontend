@@ -1,11 +1,10 @@
 FROM node:18-alpine AS frontend-build
 
-WORKDIR /app/frontend
+WORKDIR /app
 
-COPY frontend/package*.json ./
+COPY . .
+
 RUN npm install --legacy-peer-deps
-
-COPY frontend/ .
 
 EXPOSE 5173
 RUN npm run build
