@@ -1,10 +1,15 @@
-FROM node:18-alpine AS frontend-build
+FROM node:18-alpine AS build
 
 WORKDIR /app
-
 COPY . .
-
 RUN npm install --legacy-peer-deps
-
-EXPOSE 5173
 RUN npm run build
+
+FROM node:18-alpine
+WORKDIR /app
+
+RUN npm install -g serve
+
+COPY --from=build /app/dist ./dist
+
+CMD ["sh", "-c", "serve -s dist -l $PORT"]
